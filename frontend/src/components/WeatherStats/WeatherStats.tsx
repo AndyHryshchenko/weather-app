@@ -1,21 +1,53 @@
-import type { CurrentWeatherData } from '@weather-app/types';
 import { useTranslation } from 'react-i18next';
 
 export interface WeatherStatsProps {
-  current: CurrentWeatherData;
+  humidity?: number;
+  windSpeed?: number;
+  pressure?: number;
+  uvi?: number;
+  visibility?: number;
+  cloudiness?: number;
+  dewPoint?: number;
 }
 
-export function WeatherStats({ current }: WeatherStatsProps) {
+export function WeatherStats({
+  humidity,
+  windSpeed,
+  pressure,
+  uvi,
+  visibility,
+  cloudiness,
+  dewPoint,
+}: WeatherStatsProps) {
   const { t } = useTranslation();
   const stats = [
-    { label: t('weather.humidity'), value: `${current.humidity}%` },
-    { label: t('weather.wind'), value: `${current.windSpeed} m/s` },
-    { label: t('weather.pressure'), value: `${current.pressure} hPa` },
-    { label: t('weather.uvIndex'), value: String(current.uvi) },
-    { label: t('weather.visibility'), value: `${current.visibility / 1000} km` },
-    { label: t('weather.cloudiness'), value: `${current.cloudiness}%` },
-    { label: t('weather.dewPoint'), value: `${current.dewPoint}°` },
-  ];
+    humidity != null
+      ? { label: t('weather.humidity'), value: `${humidity}%` }
+      : null,
+    windSpeed != null
+      ? { label: t('weather.wind'), value: `${windSpeed} m/s` }
+      : null,
+    pressure != null
+      ? { label: t('weather.pressure'), value: `${pressure} hPa` }
+      : null,
+    uvi != null ? { label: t('weather.uvIndex'), value: String(uvi) } : null,
+    visibility != null
+      ? {
+          label: t('weather.visibility'),
+          value: `${visibility / 1000} km`,
+        }
+      : null,
+    cloudiness != null
+      ? { label: t('weather.cloudiness'), value: `${cloudiness}%` }
+      : null,
+    dewPoint != null
+      ? { label: t('weather.dewPoint'), value: `${dewPoint}°` }
+      : null,
+  ].filter((stat): stat is { label: string; value: string } => stat != null);
+
+  if (stats.length === 0) {
+    return null;
+  }
 
   return (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">

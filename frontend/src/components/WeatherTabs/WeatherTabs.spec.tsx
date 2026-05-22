@@ -285,6 +285,80 @@ describe('WeatherTabs', () => {
     expect(screen.queryByText('Morning')).not.toBeInTheDocument();
   });
 
+  it('renders formatted date label for tabs after tomorrow', () => {
+    const forecast = Array.from({ length: 4 }, (_, index) => ({
+      ...forecastDay,
+      dt: current.sunrise + index * 86_400,
+    }));
+
+    renderWithProviders(
+      <WeatherTabs
+        current={current}
+        hourly={[]}
+        forecast={forecast}
+        units={TemperatureUnit.METRIC}
+        currentStatus={AsyncStatus.SUCCEEDED}
+        hourlyStatus={AsyncStatus.SUCCEEDED}
+        forecastStatus={AsyncStatus.SUCCEEDED}
+      />,
+    );
+
+    expect(
+      screen.getByRole('tab', {
+        name: new Date((current.sunrise + 2 * 86_400) * 1000).toLocaleDateString(
+          'en-US',
+          { weekday: 'short', month: 'short', day: 'numeric' },
+        ),
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it('does not render day panel when forecast entry is missing at tab index', () => {
+    const forecast = [
+      { ...forecastDay, dt: current.sunrise },
+      { ...forecastDay, dt: current.sunrise + 86_400 },
+    ];
+    forecast.length = 3;
+
+    renderWithProviders(
+      <WeatherTabs
+        current={current}
+        hourly={[]}
+        forecast={forecast}
+        units={TemperatureUnit.METRIC}
+        currentStatus={AsyncStatus.SUCCEEDED}
+        hourlyStatus={AsyncStatus.SUCCEEDED}
+        forecastStatus={AsyncStatus.SUCCEEDED}
+        defaultTab="2"
+      />,
+    );
+
+    expect(screen.getByRole('tabpanel')).toBeEmptyDOMElement();
+  });
+
+  it('shows forecast error on non-today tabs', () => {
+    const tomorrow = {
+      ...forecastDay,
+      dt: current.sunrise + 86_400,
+    };
+
+    renderWithProviders(
+      <WeatherTabs
+        current={current}
+        hourly={[]}
+        forecast={[forecastDay, tomorrow]}
+        units={TemperatureUnit.METRIC}
+        currentStatus={AsyncStatus.SUCCEEDED}
+        hourlyStatus={AsyncStatus.SUCCEEDED}
+        forecastStatus={AsyncStatus.FAILED}
+        forecastError="Forecast unavailable"
+        defaultTab="1"
+      />,
+    );
+
+    expect(screen.getByText('Forecast unavailable')).toBeInTheDocument();
+  });
+
   it('shows temperature phases on tabs beyond hourly coverage', () => {
     const forecast = Array.from({ length: 3 }, (_, index) => ({
       ...forecastDay,

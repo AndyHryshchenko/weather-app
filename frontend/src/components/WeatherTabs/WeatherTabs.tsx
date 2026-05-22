@@ -2,16 +2,14 @@ import type { CurrentWeatherData, ForecastDay, HourlyForecast } from '@weather-a
 import type { TemperatureUnit } from '@weather-app/types';
 import { AsyncStatus } from '@weather-app/types';
 import { useTranslation } from 'react-i18next';
-import { DayWeatherSummary } from '@/components/DayWeatherSummary/DayWeatherSummary';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   getHourlyDayRange,
   getStartOfDay,
   isDayWithinHourlyRange,
 } from '@/utils/date.utils';
-import { WeatherTabForecastSection } from './WeatherTabForecastSection';
-import { WeatherTabHourlySection } from './WeatherTabHourlySection';
-import { WeatherTabTodayPanel } from './WeatherTabTodayPanel';
+import { WeatherTabDayPanel } from './WeatherTabDayPanel';
+import { getWeatherPropsForTab } from './weather-tab-day-panel.utils';
 
 export interface WeatherTabsProps {
   current: CurrentWeatherData | null;
@@ -80,42 +78,28 @@ export function WeatherTabs({
 
       {tabIndexes.map((index) => {
         const dayStart = dayStartForTab(index);
+        const forecastDay = forecast?.[index];
+        const showHourly = shouldShowHourlyForTab(index, dayStart);
+        const showDayPanel = index === 0 || forecastDay != null;
+        const weatherProps = getWeatherPropsForTab(index, current, forecastDay);
 
         return (
           <TabsContent key={index} value={String(index)}>
-            {index === 0 ? (
-              <WeatherTabTodayPanel
-                current={current}
-                hourly={hourly}
+            {showDayPanel ? (
+              <WeatherTabDayPanel
+                {...weatherProps}
                 units={units}
-                dayStart={dayStart}
-                currentStatus={currentStatus}
-                hourlyStatus={hourlyStatus}
-                currentError={currentError}
-                hourlyError={hourlyError}
+                status={index === 0 ? currentStatus : forecastStatus}
+                errorMessage={index === 0 ? currentError : forecastError}
+                {...(showHourly
+                  ? {
+                      dayStart,
+                      hourly,
+                      hourlyStatus,
+                      hourlyError,
+                    }
+                  : {})}
               />
-            ) : null}
-
-            {index >= 1 && forecast?.[index] ? (
-              <div className="space-y-4">
-                <DayWeatherSummary day={forecast[index]} units={units} />
-                {shouldShowHourlyForTab(index, dayStart) ? (
-                  <WeatherTabHourlySection
-                    dayStart={dayStart}
-                    hourly={hourly}
-                    units={units}
-                    status={hourlyStatus}
-                    errorMessage={hourlyError}
-                  />
-                ) : (
-                  <WeatherTabForecastSection
-                    day={forecast[index]}
-                    units={units}
-                    status={forecastStatus}
-                    errorMessage={forecastError}
-                  />
-                )}
-              </div>
             ) : null}
           </TabsContent>
         );

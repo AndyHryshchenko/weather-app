@@ -1,11 +1,15 @@
-import type { ForecastDay } from '@weather-app/types';
 import type { TemperatureUnit } from '@weather-app/types';
 import { useTranslation } from 'react-i18next';
 import { formatTemperature } from '@/utils/temperature.utils';
 
 export interface TemperaturePhaseStripProps {
-  day: ForecastDay;
   units: TemperatureUnit;
+  tempMorn?: number;
+  tempDay?: number;
+  tempEve?: number;
+  tempNight?: number;
+  tempMin?: number;
+  tempMax?: number;
 }
 
 interface PhaseWithValue {
@@ -13,16 +17,24 @@ interface PhaseWithValue {
   value: number;
 }
 
-export function TemperaturePhaseStrip({ day, units }: TemperaturePhaseStripProps) {
+export function TemperaturePhaseStrip({
+  units,
+  tempMorn,
+  tempDay,
+  tempEve,
+  tempNight,
+  tempMin,
+  tempMax,
+}: TemperaturePhaseStripProps) {
   const { t } = useTranslation();
   const phases: PhaseWithValue[] = [
-    { label: t('phases.morning'), value: day.temp.morn },
-    { label: t('phases.afternoon'), value: day.temp.day },
-    { label: t('phases.evening'), value: day.temp.eve },
-    { label: t('phases.night'), value: day.temp.night },
-    { label: t('phases.min'), value: day.temp.min },
-    { label: t('phases.max'), value: day.temp.max },
-  ].filter((phase): phase is PhaseWithValue => phase.value !== undefined);
+    { label: t('phases.morning'), value: tempMorn },
+    { label: t('phases.afternoon'), value: tempDay },
+    { label: t('phases.evening'), value: tempEve },
+    { label: t('phases.night'), value: tempNight },
+    { label: t('phases.min'), value: tempMin },
+    { label: t('phases.max'), value: tempMax },
+  ].filter((phase): phase is PhaseWithValue => phase.value != null);
 
   return (
     <div className="flex gap-2 overflow-x-auto pb-2">
