@@ -6,7 +6,6 @@ import type {
 } from '@weather-app/types';
 import type {
   OpenWeatherCondition,
-  OpenWeatherCurrent,
   OpenWeatherDaily,
   OpenWeatherHourly,
   OpenWeatherOneCallResponse,
