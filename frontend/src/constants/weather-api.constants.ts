@@ -1,0 +1,1 @@
+export const WEATHER_CACHE_TTL_SECONDS = 600;

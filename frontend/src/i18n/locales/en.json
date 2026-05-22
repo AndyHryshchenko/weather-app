@@ -1,0 +1,67 @@
+{
+  "app": {
+    "title": "Weather",
+    "weatherIn": "Weather in {{location}}"
+  },
+  "location": {
+    "searchLabel": "Search for a location",
+    "searchHint": "Enter a city, ZIP code, or address to see weather somewhere else.",
+    "searchPlaceholder": "e.g. Charlotte, NC or 10001",
+    "suggestionsLabel": "Suggestions",
+    "noResults": "No matching places. Try a city or ZIP code.",
+    "permissionTitle": "Enable location access",
+    "permissionDescription": "Search for a city above, or allow location access in your browser to see weather for your current area.",
+    "detecting": "Detecting your location…",
+    "permissionDenied": "Location access was denied. Search for a city instead.",
+    "lookupFailed": "We found your position but could not resolve your city. Check that the backend is running, then try again or search for a city.",
+    "autocompleteFailed": "Could not load place suggestions. Check your connection and try again.",
+    "placeResolveFailed": "Could not resolve the selected place. Try another result or search again."
+  },
+  "units": {
+    "metric": "Metric",
+    "imperial": "Imperial"
+  },
+  "weather": {
+    "feelsLike": "Feels like {{value}}",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "pressure": "Pressure",
+    "uvIndex": "UV Index",
+    "visibility": "Visibility",
+    "cloudiness": "Cloudiness",
+    "dewPoint": "Dew Point",
+    "highLow": "H {{high}} / L {{low}}",
+    "precipitation": "{{value}}% precip",
+    "forecastDays": "{{count}}-Day Forecast"
+  },
+  "hourly": {
+    "time": "Time",
+    "conditions": "Conditions",
+    "temperature": "Temperature",
+    "rainChance": "Chance of rain",
+    "rainChanceValue": "{{value}}%"
+  },
+  "tabs": {
+    "today": "Today",
+    "tomorrow": "Tomorrow"
+  },
+  "phases": {
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "evening": "Evening",
+    "night": "Night",
+    "min": "Low",
+    "max": "High"
+  },
+  "error": {
+    "boundaryTitle": "Something went wrong",
+    "boundaryDescription": "An unexpected error occurred. Please refresh the page.",
+    "loadFailed": "Some weather data could not be loaded",
+    "sectionFallback": "This section could not be loaded.",
+    "requests": {
+      "current": "Current weather",
+      "hourly": "Hourly forecast",
+      "forecast": "Daily forecast"
+    }
+  }
+}
