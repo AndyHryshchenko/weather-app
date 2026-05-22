@@ -40,6 +40,8 @@ Open the URL Vite prints, usually http://localhost:5173/ (not port 3001 — that
 
 Health check: http://localhost:3001/health
 
+API docs (development only): http://localhost:3001/api/docs
+
 If a port is already in use, stop the old process first:
 
 ```bash

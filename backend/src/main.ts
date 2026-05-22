@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { createCorsOriginHandler } from './common/cors.util';
 import type { AppConfig } from './config/configuration';
+import { SwaggerDocumentationModule } from './swagger/swagger.module';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -25,6 +26,11 @@ async function bootstrap(): Promise<void> {
   });
 
   app.enableShutdownHooks();
+
+  SwaggerDocumentationModule.setup(
+    app,
+    process.env.NODE_ENV !== 'production',
+  );
 
   const port = config.get('port', { infer: true });
   await app.listen(port);

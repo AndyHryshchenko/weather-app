@@ -19,6 +19,7 @@
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.4.4",
     "@weather-app/types": "workspace:*",
     "axios": "^1.16.1",
     "class-transformer": "^0.5.1",
