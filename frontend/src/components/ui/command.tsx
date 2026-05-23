@@ -14,6 +14,21 @@ export function Command({
   );
 }
 
+export function CommandInput({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof CommandPrimitive.Input>) {
+  return (
+    <CommandPrimitive.Input
+      className={cn(
+        'flex w-full bg-transparent text-sm outline-none placeholder:text-foreground/60 disabled:cursor-not-allowed disabled:opacity-50',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
 export function CommandList({
   className,
   ...props

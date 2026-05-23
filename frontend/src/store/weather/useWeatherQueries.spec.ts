@@ -52,7 +52,6 @@ describe('useWeatherForLocation', () => {
       useWeatherForLocation(null, TemperatureUnit.METRIC),
     );
     expect(result.current.currentStatus).toBe(AsyncStatus.IDLE);
-    expect(result.current.forecastDayCount).toBe(0);
     expect(result.current.errors).toEqual([]);
   });
 
@@ -66,7 +65,6 @@ describe('useWeatherForLocation', () => {
         TemperatureUnit.METRIC,
       ),
     );
-    expect(result.current.forecastDayCount).toBe(2);
     expect(result.current.forecastStatus).toBe(AsyncStatus.SUCCEEDED);
   });
 
@@ -85,7 +83,6 @@ describe('useWeatherForLocation', () => {
     );
     expect(result.current.hourly).toEqual([{ dt: 1 }]);
     expect(result.current.forecast).toEqual([{ dt: 1 }, { dt: 2 }]);
-    expect(result.current.forecastDayCount).toBe(2);
   });
 
   it('ignores non-array hourly and forecast payloads', () => {
@@ -105,7 +102,6 @@ describe('useWeatherForLocation', () => {
     );
     expect(result.current.hourly).toBeNull();
     expect(result.current.forecast).toBeNull();
-    expect(result.current.forecastDayCount).toBe(0);
   });
 
   it('collects errors for each failed weather request', () => {

@@ -47,7 +47,6 @@ export const useWeatherForLocation = (
     currentStatus: mapQueryToAsyncStatus(currentQuery),
     hourlyStatus: mapQueryToAsyncStatus(hourlyQuery),
     forecastStatus: mapQueryToAsyncStatus(forecastQuery),
-    forecastDayCount: forecastQuery.data?.length ?? 0,
     errors,
     currentError,
     hourlyError,

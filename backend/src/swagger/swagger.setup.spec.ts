@@ -20,7 +20,7 @@ describe('setupSwaggerDocumentation', () => {
     setupSwaggerDocumentation(app, true);
 
     expect(createDocument).toHaveBeenCalledWith(app, expect.any(Object));
-    expect(setup).toHaveBeenCalledWith(SwaggerPath.DOCS, app, document);
+    expect(setup).toHaveBeenCalledWith(SwaggerPath.DOCS, app, documentObject);
 
     createDocument.mockRestore();
     setup.mockRestore();

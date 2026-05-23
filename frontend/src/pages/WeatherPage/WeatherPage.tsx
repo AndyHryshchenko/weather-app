@@ -22,7 +22,6 @@ export function WeatherPage() {
     currentStatus,
     hourlyStatus,
     forecastStatus,
-    forecastDayCount,
     errors,
     currentError,
     hourlyError,
@@ -37,11 +36,6 @@ export function WeatherPage() {
           {displayName ? (
             <p className="text-foreground/70">
               {t('app.weatherIn', { location: displayName })}
-            </p>
-          ) : null}
-          {forecastDayCount > 0 ? (
-            <p className="text-sm text-foreground/50">
-              {t('weather.forecastDays', { count: forecastDayCount })}
             </p>
           ) : null}
         </div>

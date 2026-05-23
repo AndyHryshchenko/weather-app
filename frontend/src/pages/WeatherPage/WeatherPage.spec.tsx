@@ -22,7 +22,6 @@ describe('WeatherPage', () => {
       currentStatus: AsyncStatus.IDLE,
       hourlyStatus: AsyncStatus.IDLE,
       forecastStatus: AsyncStatus.IDLE,
-      forecastDayCount: 0,
       errors: [],
       currentError: null,
       hourlyError: null,
@@ -57,7 +56,6 @@ describe('WeatherPage', () => {
       currentStatus: AsyncStatus.FAILED,
       hourlyStatus: AsyncStatus.FAILED,
       forecastStatus: AsyncStatus.IDLE,
-      forecastDayCount: 0,
       errors: [
         { request: WeatherRequestKind.CURRENT, message: 'Current failed' },
         { request: WeatherRequestKind.HOURLY, message: 'Hourly failed' },

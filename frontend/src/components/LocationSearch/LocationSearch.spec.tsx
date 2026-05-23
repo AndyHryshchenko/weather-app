@@ -250,6 +250,26 @@ describe('LocationSearch', () => {
     });
   });
 
+  it('commits a selected suggestion via keyboard', async () => {
+    const store = createTestStore();
+    render(
+      <Provider store={store}>
+        <LocationSearch />
+      </Provider>,
+    );
+    const input = screen.getByPlaceholderText('e.g. Charlotte, NC or 10001');
+    fireEvent.focus(input);
+    fireEvent.change(input, { target: { value: 'Char' } });
+    await waitFor(() => {
+      expect(screen.getByText('Charlotte, NC, USA')).toBeInTheDocument();
+    });
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+    fireEvent.keyDown(input, { key: 'Enter' });
+    await waitFor(() => {
+      expect(store.getState().location.displayName).toBe('Charlotte, NC, US');
+    });
+  });
+
   it('commits a selected suggestion', async () => {
     const store = createTestStore();
     render(

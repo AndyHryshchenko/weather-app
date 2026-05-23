@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Command,
   CommandEmpty,
+  CommandInput,
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
@@ -29,6 +30,7 @@ export function LocationSearch() {
   const displayName = useAppSelector(selectDisplayName);
   const committedValue = displayName ?? '';
   const inputId = useId();
+  const listId = useId();
   const fieldRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [draftValue, setDraftValue] = useState(committedValue);
@@ -150,41 +152,41 @@ export function LocationSearch() {
         {t('location.searchLabel')}
       </label>
       <p className="mb-2 text-xs text-foreground/60">{t('location.searchHint')}</p>
-      <Popover open={open} onOpenChange={handleOpenChange}>
-        <PopoverAnchor asChild>
-          <div ref={fieldRef} className="w-full">
-            <input
-              id={inputId}
-              type="search"
-              autoComplete="off"
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-              placeholder={t('location.searchPlaceholder')}
-              value={inputValue}
-              onChange={(event) => {
-                setDraftValue(event.target.value);
-                setAutocompleteError(null);
-                setSelectionError(null);
-                setIsEditing(true);
-                setOpen(true);
-              }}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-            />
-          </div>
-        </PopoverAnchor>
-        {showSuggestionsPanel ? (
-          <PopoverContent
-            className="p-0"
-            align="start"
-            sideOffset={4}
-            style={popoverWidth ? { width: popoverWidth } : undefined}
-            onOpenAutoFocus={(event) => event.preventDefault()}
-          >
-            <p className="border-b border-border px-3 py-2 text-xs font-medium text-foreground/60">
-              {t('location.suggestionsLabel')}
-            </p>
-            <Command shouldFilter={false}>
-              <CommandList>
+      <Command shouldFilter={false} loop>
+        <Popover open={open} onOpenChange={handleOpenChange}>
+          <PopoverAnchor asChild>
+            <div ref={fieldRef} className="w-full">
+              <CommandInput
+                id={inputId}
+                role="combobox"
+                aria-expanded={showSuggestionsPanel}
+                aria-autocomplete="list"
+                aria-controls={showSuggestionsPanel ? listId : undefined}
+                autoComplete="off"
+                className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
+                placeholder={t('location.searchPlaceholder')}
+                value={inputValue}
+                onValueChange={(value) => {
+                  setDraftValue(value);
+                  setAutocompleteError(null);
+                  setSelectionError(null);
+                  setIsEditing(true);
+                  setOpen(true);
+                }}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+              />
+            </div>
+          </PopoverAnchor>
+          {showSuggestionsPanel ? (
+            <PopoverContent
+              className="p-0"
+              align="start"
+              sideOffset={4}
+              style={popoverWidth ? { width: popoverWidth } : undefined}
+              onOpenAutoFocus={(event) => event.preventDefault()}
+            >
+              <CommandList id={listId} aria-label={t('location.suggestionsLabel')}>
                 {visibleAutocompleteError ? (
                   <div className="px-3 py-2 text-sm text-primary">
                     {visibleAutocompleteError}
@@ -196,7 +198,8 @@ export function LocationSearch() {
                 {visiblePredictions.map((prediction) => (
                   <CommandItem
                     key={prediction.placeId}
-                    value={prediction.description}
+                    value={prediction.placeId}
+                    keywords={[prediction.description]}
                     onMouseDown={(event) => event.preventDefault()}
                     onSelect={() => void handleSelect(prediction)}
                   >
@@ -204,10 +207,10 @@ export function LocationSearch() {
                   </CommandItem>
                 ))}
               </CommandList>
-            </Command>
-          </PopoverContent>
-        ) : null}
-      </Popover>
+            </PopoverContent>
+          ) : null}
+        </Popover>
+      </Command>
       {selectionError ? <RequestErrorAlert message={selectionError} /> : null}
     </div>
   );
